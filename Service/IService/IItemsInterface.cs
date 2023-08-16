@@ -12,7 +12,7 @@ namespace ecommerce.Service.IService
         Task<SuccessMessage> AddItemAsync(AddItem item);
         Task<SuccessMessage> UpdateItemAsync(Item item);
         Task<SuccessMessage> DeleteItemAsync(string id);
-        Task<SuccessMessage> GetItemAsync(string id);
+        Task<Item> GetItemAsync(string id);
         Task<List<Item>> GetAllItemsAsync();
 
 

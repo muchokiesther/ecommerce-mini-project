@@ -11,47 +11,83 @@ using Newtonsoft.Json;
 namespace ecommerce.Service
 {
     internal class ItemService : IItemsInterface
+
     {
-        //purpose ids to communicate with a service
-          private readonly HttpClient _httpClient;
-      private readonly string _url = " http://localhost:3000/Items"; 
-          public ItemService()
-          {
+        private readonly HttpClient _httpClient;
+        private readonly string _url = " http://localhost:3000/Items";
+        public ItemService()
+        {
             _httpClient = new HttpClient();
-           
-          }
+
+        }
         public async Task<SuccessMessage> AddItemAsync(AddItem item)
         {
 
-var content = JsonConvert.SerializeObject(item);
-var bodyContent = new StringContent(content, Encoding.UTF8,"application/json");
-var response = await _httpClient.PostAsync(_url,bodyContent);
-if(response.IsSuccessStatusCode){
-    return new SuccessMessage {Message= "Item added Successfully"};
-    }
-    throw new Exception("Item not added "); 
- 
+            var content = JsonConvert.SerializeObject(item);
+            var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync(_url, bodyContent);
+            if (response.IsSuccessStatusCode)
+            {
+                return new SuccessMessage { Message = "Item added Successfully" };
+            }
+            throw new Exception("Item not added ");
+
 
         }
 
-        public Task<SuccessMessage> DeleteItemAsync(string id)
+          public async Task<SuccessMessage> DeleteItemAsync(string id)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.DeleteAsync(_url + "/" + id);
+            if (response.IsSuccessStatusCode)
+            {
+                return new SuccessMessage { Message = "Item deleted Successfully" };
+            }
+            throw new Exception("Item not deleted ");
+
         }
 
-        public Task<List<Item>> GetAllItemsAsync()
+        public async Task<List<Item>> GetAllItemsAsync()
         {
-            throw new NotImplementedException();
+           var response = await _httpClient.GetAsync(_url);
+            var items = JsonConvert.DeserializeObject<List<Item>>(await response.Content.ReadAsStringAsync());
+
+            if (response.IsSuccessStatusCode)
+            {
+                return items;
+            }
+
+            throw new Exception("Cant Get items");
         }
 
-        public Task<SuccessMessage> GetItemAsync(string id)
+      
+        public async Task<Item> GetItemAsync(string id)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.GetAsync(_url + "/" + id);
+            var item = JsonConvert.DeserializeObject<Item>(await response.Content.ReadAsStringAsync());
+            if (response.IsSuccessStatusCode)
+            {
+                return item;
+            }
+            throw new Exception("Item not found");
         }
 
-        public Task<SuccessMessage> UpdateItemAsync(Item item)
+          public async Task<SuccessMessage> UpdateItemAsync(Item item)
         {
-            throw new NotImplementedException();
+            var content = JsonConvert.SerializeObject(item);
+            var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PutAsync(_url + "/" + item.Id, bodyContent);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return new SuccessMessage { Message = "Item Updated Successfully" };
+            }
+            else
+            {
+                throw new Exception("Updating an Item failed");
+            }
         }
+
     }
 }
+
