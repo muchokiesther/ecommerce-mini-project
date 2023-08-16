@@ -1,0 +1,23 @@
+{
+    "Items": [
+      {
+        "Id": 1,
+        "ItemName": "Samsung A22",
+        "Description": "Lavender shade 128gb",
+        "Price": "10.99"
+      },
+      {
+        "Id": 2,
+        "ItemName": "Iphone X",
+        "Description": "Slightly used,Get it for a discounted rate.",
+        "Price": "15.99"
+      },
+      {
+        "Id": 3,
+        "ItemName": "Hp Laptop",
+        "Description": "Pro Book ,For pros like you",
+        "Price": "7.49"
+      }
+    ]
+  }
+  
