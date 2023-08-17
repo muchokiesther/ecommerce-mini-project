@@ -8,11 +8,11 @@ using ecommerce.Models;
 
 namespace ecommerce.Controllers
 {
-    public class ItemsController
+    public  class ItemsController
     {
         private readonly ItemService itemService = new ItemService();
 
-        public static void Init()
+        public static async Task Init()
         {
             Console.WriteLine("Welcome to The Great Shop");
             Console.WriteLine("1. Add an Item");
@@ -23,12 +23,12 @@ namespace ecommerce.Controllers
             var validateResults = Validation.Validate(new List<string> { input });
             if (!validateResults)
             {
-                ItemsController.Init();
+                await ItemsController.Init();
             }
             else
             {
                 var itemsController = new ItemsController();
-                itemsController.MenuRedirectAsync(input).Wait();
+                await itemsController.MenuRedirectAsync(input);
             }
         }
 
@@ -49,7 +49,7 @@ namespace ecommerce.Controllers
                     await DeleteItem();
                     break;
                 default:
-                    // await ItemsController.Init();
+                     ItemsController.Init();
                     break;
             }
         }
@@ -74,6 +74,7 @@ namespace ecommerce.Controllers
 
             try
             {
+                System.Console.WriteLine($"{newItem.Description}");
                 var res = await itemService.AddItemAsync(newItem);
                 Console.WriteLine(res.Message);
             }
